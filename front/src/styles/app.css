@@ -1,1 +1,19 @@
-/* No CSS *//*# sourceMappingURL=app.css.map */
+.form {
+  width: 300px;
+  margin: auto;
+  margin-top: 50px;
+}
+
+.inner-form {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+/*# sourceMappingURL=App.css.map */
