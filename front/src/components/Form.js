@@ -15,7 +15,6 @@ export default function Form({ type }) {
         password: passwordInput,
       })
       .then((res) => {
-        console.log(res.data);
         setErrorMessage("");
       })
       .catch((err) => setErrorMessage(err.response.data));
@@ -31,7 +30,6 @@ export default function Form({ type }) {
         password: passwordInput,
       })
       .then((res) => {
-        console.log(res.data);
         setErrorMessage("");
         createCookie("refreshToken", res.data.refreshToken);
         createCookie("accessToken", res.data.accessToken, 1800000);

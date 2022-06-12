@@ -8,7 +8,7 @@ const { Op } = require("sequelize");
 const Sequelize = require("sequelize");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
-const { checkInput, generateAccessToken } = require("../utils");
+const { checkInput, generateAccessToken, validateToken } = require("../utils");
 const sequelize = new Sequelize(
   process.env.SQL_DATA_BASE,
   process.env.SQL_USERNAME,
@@ -93,4 +93,8 @@ user.post("/register", checkInput, async (req, res) => {
     .catch((err) => res.status(400).send(err.message));
 });
 
+user.get("/info", validateToken, async (req, res) => {
+  const { user } = req;
+  res.send(user);
+});
 module.exports = user;

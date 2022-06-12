@@ -18,7 +18,7 @@ const intercept = () => {
         const accessToken = readCookie("accessToken");
         if (!accessToken)
           return axios
-            .post("/users/token", {
+            .post("api/user/token", {
               refreshToken: refreshToken,
             })
             .then((data) => {
