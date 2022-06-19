@@ -11,7 +11,7 @@ const getHttp = (url, tokenName) => {
 
 const intercept = () => {
   axios.interceptors.response.use(
-    (response) => response,
+    (res) => res,
     (err) => {
       const refreshToken = readCookie("refreshToken");
       if (err.message.slice(-3) === "403" && refreshToken) {
@@ -28,7 +28,7 @@ const intercept = () => {
               return axios.request(err.config);
             })
             .catch((err) => {
-              console.log(err);
+              console.log(err.response.data);
               eraseCookie("refreshToken");
             });
       }

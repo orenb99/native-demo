@@ -63,7 +63,7 @@ user.post("/token", (req, res) => {
 
 user.delete("/logout", (req, res) => {
   const refreshToken = req.body.token;
-  models.Token.delete({ where: { token: refreshToken } })
+  models.Token.destroy({ where: { token: refreshToken } })
     .then(() => {
       return res.status(204);
     })
