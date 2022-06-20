@@ -1,2 +1,28 @@
 .navbar {
+  .closed {
+    padding: 0.3rem 0;
+    background: #ddd;
+  }
+  width: 100vw;
+  background: #ddd;
+  padding: 0.3rem 0;
+  .items {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    width: 25%;
+
+    a {
+      font-size: 1.3rem;
+      text-decoration: none;
+      color: black;
+      &.active {
+        color: #333;
+      }
+      &:hover {
+        transform: scale(1.1);
+        transition: 300ms;
+      }
+    }
+  }
 }

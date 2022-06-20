@@ -1,14 +1,12 @@
 import React, { useEffect } from "react";
 import { readCookie } from "../utils/cookies";
 
-function Home({ user, getUser }) {
-  useEffect(() => {
-    getUser();
-  }, []);
+function Home({ user }) {
   return (
-    <div className="home">
-      <div>{`hello ${user ? user.name : "user"}`}</div>
-      <div></div>
+    <div className="page home">
+      <div className="inner">
+        <div>{`hello ${user ? user.name : "user"}`}</div>
+      </div>
     </div>
   );
 }

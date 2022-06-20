@@ -32,7 +32,7 @@ export default function Form({ type }) {
         email: emailInput,
         password: passwordInput,
       })
-      .then((res) => {
+      .then(async (res) => {
         setErrorMessage("");
         createCookie("refreshToken", res.data.refreshToken);
         createCookie("accessToken", res.data.accessToken, 1800000);
