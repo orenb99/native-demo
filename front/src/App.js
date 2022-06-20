@@ -19,14 +19,13 @@ function App() {
       })
       .catch((err) => {
         setUser();
-        
       });
   };
 
   return (
     <div className="App">
       <Router>
-        <Navbar />
+        <Navbar user={user} />
         <Routes>
           <Route
             exact

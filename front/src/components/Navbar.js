@@ -2,7 +2,7 @@ import axios from "axios";
 import React from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { eraseCookie, readCookie } from "../utils/cookies";
-function Navbar() {
+function Navbar({ user }) {
   const navigate = useNavigate();
   const logout = (e) => {
     e.preventDefault();
@@ -19,11 +19,18 @@ function Navbar() {
   return (
     <div className="navbar">
       <NavLink to="/">Home</NavLink>
-      <NavLink to="/login">Login</NavLink>
-      <NavLink to="/register">Register</NavLink>
-      <NavLink to="" onClick={logout}>
-        Logout
-      </NavLink>
+      {user ? (
+        <>
+          <NavLink to="" onClick={logout}>
+            Logout
+          </NavLink>
+        </>
+      ) : (
+        <>
+          <NavLink to="/login">Login</NavLink>
+          <NavLink to="/register">Register</NavLink>
+        </>
+      )}
     </div>
   );
 }
