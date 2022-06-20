@@ -22,7 +22,14 @@ function Navbar({ user, setUser }) {
   return (
     <div className="navbar">
       <div className="items">
-        <NavLink to="/">Home</NavLink>
+        <NavLink
+          to="/"
+          onClick={(e) => {
+            if (e.target.href.endsWith(location.pathname)) e.preventDefault();
+          }}
+        >
+          Home
+        </NavLink>
         {user ? (
           <>
             <NavLink to="/logout" onClick={logout}>
@@ -31,8 +38,24 @@ function Navbar({ user, setUser }) {
           </>
         ) : (
           <>
-            <NavLink to="/login">Login</NavLink>
-            <NavLink to="/register">Register</NavLink>
+            <NavLink
+              to="/login"
+              onClick={(e) => {
+                if (e.target.href.endsWith(location.pathname))
+                  e.preventDefault();
+              }}
+            >
+              Login
+            </NavLink>
+            <NavLink
+              to="/register"
+              onClick={(e) => {
+                if (e.target.href.endsWith(location.pathname))
+                  e.preventDefault();
+              }}
+            >
+              Register
+            </NavLink>
           </>
         )}
       </div>

@@ -32,8 +32,8 @@ function App() {
     <div className="App">
       <Navbar user={user} setUser={setUser} />
       <TransitionGroup component={null}>
-        <CSSTransition key={location.key} classNames="page" timeout={500}>
-          <Routes>
+        <CSSTransition key={location.key} classNames="page" timeout={300}>
+          <Routes location={location}>
             <Route exact path="/" element={<Home user={user} />} />
             <Route exact path="/register" element={<RegisterPage />} />
             <Route exact path="/login" element={<LoginPage />} />
