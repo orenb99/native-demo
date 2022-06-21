@@ -1,19 +1,23 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, Button } from "react-native";
+import { useState, useEffect } from "react";
+import { StyleSheet, Text, View, button, Button } from "react-native";
+import { NativeRouter as Router, Routes, Route } from "react-router-native";
+import Navbar from "./components/Navbar";
+import Home from "./components/Home";
+import LoginPage from "./components/LoginPage";
+import RegisterPage from "./components/RegisterPage";
+import stylesheet from "./stylesheet.json";
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>yes</Text>
-      <StatusBar style="auto" />
-    </View>
+    <Router>
+      <Navbar />
+      <Routes>
+        <Route exact path="/" element={<Home />} />
+        <Route exact path="/login" element={<LoginPage />} />
+        <Route exact path="/register" element={<RegisterPage />} />
+      </Routes>
+    </Router>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
+const styles = StyleSheet.create(stylesheet);
