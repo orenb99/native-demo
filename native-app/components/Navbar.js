@@ -64,7 +64,11 @@ const NavBar = ({ navOpen, setNavOpen }) => {
         <FlatList
           data={guestLinks}
           renderItem={({ item }) => (
-            <Link to={item.path} underlayColor={"#333"}>
+            <Link
+              to={item.path}
+              underlayColor={"#333"}
+              onPress={() => setNavOpen(false)}
+            >
               <Text numberOfLines={1} style={styles.text}>
                 {item.title}
               </Text>
