@@ -1,40 +1,76 @@
-import { StyleSheet, Text, View, Animated } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Animated,
+  FlatList,
+  Button,
+  TouchableHighlight,
+} from "react-native";
 import { Link } from "react-router-native";
 import React, { useEffect, useRef } from "react";
 
-const NavBar = ({ navOpen }) => {
+const NavBar = ({ navOpen, setNavOpen }) => {
   const animatedWidth = useRef(new Animated.Value(0)).current;
+  const guestLinks = [
+    { title: "Home", path: "/" },
+    { title: "Login", path: "/login" },
+    { title: "Register", path: "/register" },
+  ];
   useEffect(() => {
-    console.log(navOpen);
     if (navOpen)
-      Animated.timing(animatedWidth, { toValue: 1, duration: 500 }).start();
+      Animated.timing(animatedWidth, {
+        toValue: 1,
+        duration: 500,
+        useNativeDriver: false,
+      }).start();
     if (!navOpen)
-      Animated.timing(animatedWidth, { toValue: 0, duration: 500 }).start();
+      Animated.timing(animatedWidth, {
+        toValue: 0,
+        duration: 500,
+        useNativeDriver: false,
+      }).start();
   }, [navOpen]);
+
   return (
     <Animated.View
       style={{
         position: "absolute",
-        backgroundColor: "#AAA",
+        backgroundColor: "#555",
         height: "100%",
         width: animatedWidth.interpolate({
           inputRange: [0, 1],
-          outputRange: ["0%", "30%"],
+          outputRange: ["0%", "40%"],
         }),
         overflow: "hidden",
-        zIndex: "2",
+        elevation: 5,
+        opacity: 100,
       }}
     >
       <View style={styles.inner}>
-        <Link to="/">
-          <Text numberOfLines={1}>Home</Text>
-        </Link>
-        <Link to="/register">
-          <Text numberOfLines={1}>Register</Text>
-        </Link>
-        <Link to="/login">
-          <Text numberOfLines={1}>Login</Text>
-        </Link>
+        <View style={styles.buttonContainer}>
+          <Text numberOfLines={1} style={styles.button}>
+            Content
+          </Text>
+          <TouchableHighlight
+            onPress={() => setNavOpen(false)}
+            underlayColor={"#555"}
+          >
+            <Text numberOfLines={1} style={styles.button}>
+              x
+            </Text>
+          </TouchableHighlight>
+        </View>
+        <FlatList
+          data={guestLinks}
+          renderItem={({ item }) => (
+            <Link to={item.path} underlayColor={"#333"}>
+              <Text numberOfLines={1} style={styles.text}>
+                {item.title}
+              </Text>
+            </Link>
+          )}
+        />
       </View>
     </Animated.View>
   );
@@ -46,8 +82,24 @@ const styles = StyleSheet.create({
   inner: {
     display: "flex",
     flexDirection: "column",
-    width: "50%",
+    width: "100%",
     justifyContent: "space-evenly",
-    flexShrink: "1",
+  },
+  text: {
+    color: "white",
+    alignItems: "center",
+    padding: 10,
+  },
+  button: {
+    color: "white",
+    alignItems: "center",
+    padding: 10,
+    backgroundColor: "#222",
+  },
+  buttonContainer: {
+    display: "flex",
+    flexDirection: "row",
+    backgroundColor: "#222",
+    justifyContent: "space-between",
   },
 });

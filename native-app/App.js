@@ -10,13 +10,13 @@ export default function App() {
   return (
     <Router>
       <StatusBar />
-      <Navbar navOpen={navOpen} />
       <Routes>
         <Route exact path="/" element={<Home />} />
         <Route exact path="/login" element={<LoginPage />} />
         <Route exact path="/register" element={<RegisterPage />} />
       </Routes>
-      <Button title="press me" onPress={() => setNavOpen(!navOpen)} />
+      <Button title="press me" onPress={() => setNavOpen(true)} />
+      <Navbar navOpen={navOpen} setNavOpen={setNavOpen} />
     </Router>
   );
 }

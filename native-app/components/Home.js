@@ -3,12 +3,16 @@ import React from "react";
 
 const Home = () => {
   return (
-    <View>
-      <Text>Home</Text>
+    <View style={styles.home}>
+      <Text>
+        HomeHomeHomeHomeHomeHomeHomeHomeHomeHomeHomeHomeHomeHomeHomeHomeHomeHomeHomeHomeHomeHomeHomeHomeHomeHomeHomeHomeHomeHomeHomeHomeHomeHomeHomeHomeHomeHomeHomeHomeHomeHomeHome
+      </Text>
     </View>
   );
 };
 
 export default Home;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  home: { zIndex: 1, elevation: 1 },
+});
