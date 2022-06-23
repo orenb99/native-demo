@@ -36,4 +36,27 @@ function intercept() {
     }
   );
 }
-export { intercept, getHttp };
+
+function loaderMonitor(setLoader) {
+  axios.interceptors.request.use(
+    (config) => {
+      setLoader(true);
+      return config;
+    },
+    function (err) {
+      return Promise.reject(err);
+    }
+  );
+  axios.interceptors.response.use(
+    (res) => {
+      setLoader(false);
+      return res;
+    },
+    function (err) {
+      setLoader(false);
+
+      return Promise.reject(err);
+    }
+  );
+}
+export { intercept, getHttp, loaderMonitor };

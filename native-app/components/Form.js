@@ -17,7 +17,6 @@ const Form = ({ type }) => {
     axios
       .post(http + "/api/user/login", { email, password })
       .then(async ({ data }) => {
-        setErrorMessage("");
         await AsyncStorage.multiSet(
           [
             ["accessToken", data.accessToken],
@@ -33,7 +32,12 @@ const Form = ({ type }) => {
   };
   const register = () => {
     if (!checkText()) return;
-    axios.post();
+    axios
+      .post(http + "/api/user/register", { email, password, name })
+      .then(() => {
+        navigate("/login", { replace: true });
+      })
+      .catch((err) => setErrorMessage(err.message.data));
   };
 
   const checkText = () => {

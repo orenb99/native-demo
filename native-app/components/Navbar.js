@@ -6,17 +6,38 @@ import {
   FlatList,
   TouchableHighlight,
 } from "react-native";
-import { Link } from "react-router-native";
+import { Link, useNavigate } from "react-router-native";
 import React, { useEffect, useRef } from "react";
+import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const NavBar = ({ navOpen, closeNav, user }) => {
+const NavBar = ({ navOpen, closeNav, user, http, setUser }) => {
+  const navigate = useNavigate();
   const animatedWidth = useRef(new Animated.Value(0)).current;
   const guestLinks = [
     { title: "Home", path: "/" },
     { title: "Login", path: "/login" },
     { title: "Register", path: "/register" },
   ];
-  const userLinks = [{ title: "Home", path: "/" }];
+  const userLinks = [
+    { title: "Home", path: "/" },
+    { title: "Logout", path: "/logout" },
+  ];
+
+  const Logout = async (e) => {
+    e.preventDefault();
+    const token = await AsyncStorage.getItem("refreshToken");
+    axios
+      .delete(http + "/api/user/logout", { token })
+      .then(async () => {
+        await AsyncStorage.clear();
+        closeNav();
+        setUser();
+        navigate("/login", { replace: true });
+      })
+      .catch(() => {});
+  };
+
   useEffect(() => {
     if (navOpen)
       Animated.timing(animatedWidth, {
@@ -61,7 +82,11 @@ const NavBar = ({ navOpen, closeNav, user }) => {
         <FlatList
           data={user ? userLinks : guestLinks}
           renderItem={({ item }) => (
-            <Link to={item.path} underlayColor={"#333"} onPress={closeNav}>
+            <Link
+              to={item.path}
+              underlayColor={"#333"}
+              onPress={item.title === "Logout" ? Logout : closeNav}
+            >
               <Text numberOfLines={1} style={styles.text}>
                 {item.title}
               </Text>
