@@ -29,7 +29,7 @@ const Form = ({ type }) => {
         );
         navigate("/", { replace: true });
       })
-      .catch((err) => console.log(err.response.data));
+      .catch((err) => setErrorMessage(err.response.data));
   };
   const register = () => {
     if (!checkText()) return;

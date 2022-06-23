@@ -1,12 +1,13 @@
 import { StyleSheet, Text, View } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 
-const Home = () => {
+const Home = ({ user, refreshPage }) => {
+  useEffect(() => {
+    refreshPage();
+  }, []);
   return (
     <View style={styles.home}>
-      <Text>
-        HomeHomeHomeHomeHomeHomeHomeHomeHomeHomeHomeHomeHomeHomeHomeHomeHomeHomeHomeHomeHomeHomeHomeHomeHomeHomeHomeHomeHomeHomeHomeHomeHomeHomeHomeHomeHomeHomeHomeHomeHomeHomeHome
-      </Text>
+      <Text>Hello {user ? user.name : "user"}</Text>
     </View>
   );
 };

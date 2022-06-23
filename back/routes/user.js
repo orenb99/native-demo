@@ -73,9 +73,6 @@ user.delete("/logout", (req, res) => {
 });
 
 user.post("/register", checkInput, async (req, res) => {
-  const passwordReg = "[a-zA-Z0-9]$";
-  const nameReg = "[a-zA-Z]$";
-
   const { name, email, password } = req.body;
   if (!name) return res.status(400).send("name missing");
 

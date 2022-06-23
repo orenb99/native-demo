@@ -4,19 +4,19 @@ import {
   View,
   Animated,
   FlatList,
-  Button,
   TouchableHighlight,
 } from "react-native";
 import { Link } from "react-router-native";
 import React, { useEffect, useRef } from "react";
 
-const NavBar = ({ navOpen, setNavOpen }) => {
+const NavBar = ({ navOpen, closeNav, user }) => {
   const animatedWidth = useRef(new Animated.Value(0)).current;
   const guestLinks = [
     { title: "Home", path: "/" },
     { title: "Login", path: "/login" },
     { title: "Register", path: "/register" },
   ];
+  const userLinks = [{ title: "Home", path: "/" }];
   useEffect(() => {
     if (navOpen)
       Animated.timing(animatedWidth, {
@@ -52,23 +52,16 @@ const NavBar = ({ navOpen, setNavOpen }) => {
           <Text numberOfLines={1} style={styles.button}>
             Content
           </Text>
-          <TouchableHighlight
-            onPress={() => setNavOpen(false)}
-            underlayColor={"#555"}
-          >
+          <TouchableHighlight onPress={closeNav} underlayColor={"#555"}>
             <Text numberOfLines={1} style={styles.button}>
               x
             </Text>
           </TouchableHighlight>
         </View>
         <FlatList
-          data={guestLinks}
+          data={user ? userLinks : guestLinks}
           renderItem={({ item }) => (
-            <Link
-              to={item.path}
-              underlayColor={"#333"}
-              onPress={() => setNavOpen(false)}
-            >
+            <Link to={item.path} underlayColor={"#333"} onPress={closeNav}>
               <Text numberOfLines={1} style={styles.text}>
                 {item.title}
               </Text>
