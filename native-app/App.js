@@ -1,5 +1,12 @@
 import { useState, useEffect } from "react";
-import { StyleSheet, View, Button, StatusBar } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Text,
+  Button,
+  StatusBar,
+  TouchableHighlight,
+} from "react-native";
 import { NativeRouter as Router, Routes, Route } from "react-router-native";
 import Navbar from "./components/Navbar";
 import Home from "./components/Home";
@@ -7,6 +14,7 @@ import LoginPage from "./components/LoginPage";
 import RegisterPage from "./components/RegisterPage";
 import { intercept, getHttp } from "./utils/networkWrapper";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import OpenButton from "./components/OpenButton";
 export default function App() {
   const http = "http://10.100.102.10:3001";
   const [navOpen, setNavOpen] = useState(false);
@@ -27,6 +35,7 @@ export default function App() {
   return (
     <Router>
       <StatusBar />
+      <OpenButton openNav={() => setNavOpen(true)} />
       <Routes>
         <Route
           exact
@@ -38,7 +47,6 @@ export default function App() {
         <Route exact path="/login" element={<LoginPage />} />
         <Route exact path="/register" element={<RegisterPage />} />
       </Routes>
-      <Button title="open " onPress={() => setNavOpen(true)} />
       {/* <Button title="clear" onPress={async () => await AsyncStorage.clear()} /> */}
       <Navbar
         navOpen={navOpen}
