@@ -1,8 +1,12 @@
 import { Button, StyleSheet, Text, TextInput, View } from "react-native";
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-native";
 import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Form = ({ type }) => {
+  const navigate = useNavigate();
+  const http = "http://10.100.102.10:3001";
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
@@ -11,11 +15,21 @@ const Form = ({ type }) => {
   const login = () => {
     if (!checkText()) return;
     axios
-      .post("http://localhost:3001/api/user/login", { email, password })
-      .then((res) => {
-        console.log("login");
+      .post(http + "/api/user/login", { email, password })
+      .then(async ({ data }) => {
+        setErrorMessage("");
+        await AsyncStorage.multiSet(
+          [
+            ["accessToken", data.accessToken],
+            ["refreshToken", data.refreshToken],
+          ],
+          (err) => {
+            setErrorMessage("task didn't finish");
+          }
+        );
+        navigate("/", { replace: true });
       })
-      .catch((err) => setErrorMessage(err.response.data));
+      .catch((err) => console.log(err.response.data));
   };
   const register = () => {
     if (!checkText()) return;
@@ -48,7 +62,6 @@ const Form = ({ type }) => {
         return false;
       }
     }
-    setErrorMessage("ok");
     return true;
   };
 
