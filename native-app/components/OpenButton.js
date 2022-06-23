@@ -5,10 +5,14 @@ import React from "react";
 
 const OpenButton = ({ openNav }) => {
   return (
-    <View>
-      <Icon.Button name="menu">
-        <Text>enter</Text>
-      </Icon.Button>
+    <View style={styles.container}>
+      <Icon.Button
+        name="menu"
+        onPress={openNav}
+        color={"black"}
+        backgroundColor={"white"}
+        size={30}
+      />
     </View>
   );
 };
@@ -16,6 +20,6 @@ const OpenButton = ({ openNav }) => {
 export default OpenButton;
 
 const styles = StyleSheet.create({
-  container: { alignSelf: "flex-start", padding: 10, backgroundColor: "#333" },
+  container: { alignSelf: "flex-start" },
   text: { fontSize: 20 },
 });

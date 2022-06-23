@@ -54,7 +54,7 @@ const NavBar = ({ navOpen, closeNav, user }) => {
           </Text>
           <TouchableHighlight onPress={closeNav} underlayColor={"#555"}>
             <Text numberOfLines={1} style={styles.button}>
-              x
+              X
             </Text>
           </TouchableHighlight>
         </View>
@@ -90,6 +90,7 @@ const styles = StyleSheet.create({
   button: {
     color: "white",
     alignItems: "center",
+    fontSize: 17,
     padding: 10,
     backgroundColor: "#222",
   },
