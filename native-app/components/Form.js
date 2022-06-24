@@ -35,13 +35,14 @@ const Form = ({ type }) => {
     axios
       .post(http + "/api/user/register", { email, password, name })
       .then(() => {
+        console.log("yes");
         navigate("/login", { replace: true });
       })
-      .catch((err) => setErrorMessage(err.message.data));
+      .catch((err) => setErrorMessage(err.response.data));
   };
 
   const checkText = () => {
-    const passwordReg = /[a-zA-Z0-9]$/;
+    const passwordReg = /[a-zA-Z0-9]{8}$/;
     const nameReg = /[a-zA-Z]$/;
     const emailReg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     if (!password || !email) {
@@ -73,7 +74,7 @@ const Form = ({ type }) => {
     <View>
       <View style={styles.formContainer}>
         <View style={styles.formBlock}>
-          <Text numberOfLines={1}>Email:</Text>
+          <Text numberOfLines={1}>Email</Text>
           <TextInput
             value={email}
             onChangeText={setEmail}
@@ -82,7 +83,7 @@ const Form = ({ type }) => {
           />
         </View>
         <View style={styles.formBlock}>
-          <Text numberOfLines={1}>Password:</Text>
+          <Text numberOfLines={1}>Password</Text>
           <TextInput
             value={password}
             onChangeText={setPassword}
@@ -93,7 +94,7 @@ const Form = ({ type }) => {
         </View>
         {type === "register" && (
           <View style={styles.formBlock}>
-            <Text numberOfLines={1}>Name:</Text>
+            <Text numberOfLines={1}>Name</Text>
             <TextInput
               value={name}
               onChangeText={setName}
@@ -106,10 +107,12 @@ const Form = ({ type }) => {
           <Text style={styles.error}>{errorMessage}</Text>
         </View>
         <View style={styles.formBlock}>
-          <Button
-            title="submit"
-            onPress={type === "register" ? register : login}
-          />
+          <View style={styles.buttonContainer}>
+            <Button
+              title="submit"
+              onPress={type === "register" ? register : login}
+            />
+          </View>
         </View>
       </View>
     </View>
@@ -120,18 +123,28 @@ export default Form;
 
 const styles = StyleSheet.create({
   input: {
+    marginVertical: 10,
     height: 40,
-    margin: 12,
     borderWidth: 1,
     padding: 10,
   },
   formContainer: {
     display: "flex",
     flexDirection: "column",
+    width: "70%",
+    alignSelf: "center",
+    alignContent: "center",
   },
   formBlock: {
     display: "flex",
     flexDirection: "column",
+  },
+  buttonContainer: {
+    width: "50%",
+    display: "flex",
+    flexDirection: "column",
+    backgroundColor: "red",
+    alignSelf: "center",
   },
   error: { color: "red" },
 });

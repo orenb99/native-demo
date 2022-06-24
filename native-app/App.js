@@ -37,32 +37,40 @@ export default function App() {
   return (
     <Router>
       <StatusBar />
-      {loader ? (
-        <Text>loading...</Text>
-      ) : (
-        <>
-          <OpenButton openNav={() => setNavOpen(true)} />
-          <Routes>
-            <Route
-              exact
-              path="/"
-              element={
-                <Home user={user} refreshPage={() => setRefresh(!refresh)} />
-              }
+      <OpenButton
+        openNav={() => setNavOpen(true)}
+        closeNav={() => setNavOpen(false)}
+      />
+      <Routes>
+        <Route
+          exact
+          path="/"
+          element={
+            <Home
+              user={user}
+              refreshPage={() => setRefresh(!refresh)}
+              closeNav={() => setNavOpen(false)}
             />
-            <Route exact path="/login" element={<LoginPage />} />
-            <Route exact path="/register" element={<RegisterPage />} />
-          </Routes>
-          {/* <Button title="clear" onPress={async () => await AsyncStorage.clear()} /> */}
-          <Navbar
-            navOpen={navOpen}
-            closeNav={() => setNavOpen(false)}
-            setUser={setUser}
-            user={user}
-            http={http}
-          />
-        </>
-      )}
+          }
+        />
+        <Route
+          exact
+          path="/login"
+          element={<LoginPage closeNav={() => setNavOpen(false)} />}
+        />
+        <Route
+          exact
+          path="/register"
+          element={<RegisterPage closeNav={() => setNavOpen(false)} />}
+        />
+      </Routes>
+      <Navbar
+        navOpen={navOpen}
+        closeNav={() => setNavOpen(false)}
+        setUser={setUser}
+        user={user}
+        http={http}
+      />
     </Router>
   );
 }
