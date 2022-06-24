@@ -2,12 +2,15 @@ import { useState, useEffect } from "react";
 import {
   StyleSheet,
   View,
-  Text,
-  Button,
   StatusBar,
-  TouchableHighlight,
+  TouchableWithoutFeedback,
 } from "react-native";
-import { NativeRouter as Router, Routes, Route } from "react-router-native";
+import {
+  NativeRouter as Router,
+  Routes,
+  Route,
+  Animated,
+} from "react-router-native";
 import Navbar from "./components/Navbar";
 import Home from "./components/Home";
 import LoginPage from "./components/LoginPage";
@@ -37,33 +40,34 @@ export default function App() {
   return (
     <Router>
       <StatusBar />
-      <OpenButton
-        openNav={() => setNavOpen(true)}
-        closeNav={() => setNavOpen(false)}
-      />
-      <Routes>
-        <Route
-          exact
-          path="/"
-          element={
-            <Home
-              user={user}
-              refreshPage={() => setRefresh(!refresh)}
-              closeNav={() => setNavOpen(false)}
+      <TouchableWithoutFeedback onPress={() => setNavOpen(false)}>
+        <View style={styles.page}>
+          <OpenButton openNav={() => setNavOpen(true)} />
+          <Routes>
+            <Route
+              exact
+              path="/"
+              element={
+                <Home
+                  user={user}
+                  refreshPage={() => setRefresh(!refresh)}
+                  closeNav={() => setNavOpen(false)}
+                />
+              }
             />
-          }
-        />
-        <Route
-          exact
-          path="/login"
-          element={<LoginPage closeNav={() => setNavOpen(false)} />}
-        />
-        <Route
-          exact
-          path="/register"
-          element={<RegisterPage closeNav={() => setNavOpen(false)} />}
-        />
-      </Routes>
+            <Route
+              exact
+              path="/login"
+              element={<LoginPage closeNav={() => setNavOpen(false)} />}
+            />
+            <Route
+              exact
+              path="/register"
+              element={<RegisterPage closeNav={() => setNavOpen(false)} />}
+            />
+          </Routes>
+        </View>
+      </TouchableWithoutFeedback>
       <Navbar
         navOpen={navOpen}
         closeNav={() => setNavOpen(false)}
@@ -74,3 +78,4 @@ export default function App() {
     </Router>
   );
 }
+const styles = StyleSheet.create({ page: { height: "100%" } });

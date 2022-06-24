@@ -1,21 +1,17 @@
 import { StyleSheet, Text, TouchableWithoutFeedback, View } from "react-native";
 import React, { useEffect } from "react";
 
-const Home = ({ user, refreshPage, closeNav }) => {
+const Home = ({ user, refreshPage }) => {
   useEffect(() => {
     refreshPage();
   }, []);
   return (
-    <TouchableWithoutFeedback onPress={closeNav}>
-      <View style={styles.page}>
-        <Text>Hello {user ? user.name : "user"}</Text>
-      </View>
-    </TouchableWithoutFeedback>
+    <View>
+      <Text>Hello {user ? user.name : "user"}</Text>
+    </View>
   );
 };
 
 export default Home;
 
-const styles = StyleSheet.create({
-  page: { height: "100%" },
-});
+const styles = StyleSheet.create({});
