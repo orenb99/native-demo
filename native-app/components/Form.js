@@ -35,7 +35,6 @@ const Form = ({ type }) => {
     axios
       .post(http + "/api/user/register", { email, password, name })
       .then(() => {
-        console.log("yes");
         navigate("/login", { replace: true });
       })
       .catch((err) => setErrorMessage(err.response.data));

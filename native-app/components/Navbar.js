@@ -61,7 +61,7 @@ const NavBar = ({ navOpen, closeNav, user, http, setUser }) => {
         height: "100%",
         width: animatedWidth.interpolate({
           inputRange: [0, 1],
-          outputRange: ["0%", "40%"],
+          outputRange: ["0%", "50%"],
         }),
         overflow: "hidden",
         elevation: 5,

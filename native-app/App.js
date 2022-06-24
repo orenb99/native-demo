@@ -1,16 +1,12 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   StyleSheet,
   View,
   StatusBar,
   TouchableWithoutFeedback,
-} from "react-native";
-import {
-  NativeRouter as Router,
-  Routes,
-  Route,
   Animated,
-} from "react-router-native";
+} from "react-native";
+import { NativeRouter as Router, Routes, Route } from "react-router-native";
 import Navbar from "./components/Navbar";
 import Home from "./components/Home";
 import LoginPage from "./components/LoginPage";
@@ -18,14 +14,29 @@ import RegisterPage from "./components/RegisterPage";
 import { intercept, getHttp, loaderMonitor } from "./utils/networkWrapper";
 import OpenButton from "./components/OpenButton";
 export default function App() {
+  const animatedColor = useRef(new Animated.Value(0)).current;
+
   const http = "http://10.100.102.10:3001";
   const [navOpen, setNavOpen] = useState(false);
   const [user, setUser] = useState();
   const [refresh, setRefresh] = useState(false);
   const [loader, setLoader] = useState(false);
+
   useEffect(() => {
-    // loaderMonitor(setLoader);
-  }, []);
+    if (navOpen)
+      Animated.timing(animatedColor, {
+        toValue: 1,
+        duration: 500,
+        useNativeDriver: false,
+      }).start();
+    if (!navOpen)
+      Animated.timing(animatedColor, {
+        toValue: 0,
+        duration: 500,
+        useNativeDriver: false,
+      }).start();
+  }, [navOpen]);
+
   useEffect(() => {
     if (user) return;
     intercept();
@@ -41,7 +52,15 @@ export default function App() {
     <Router>
       <StatusBar />
       <TouchableWithoutFeedback onPress={() => setNavOpen(false)}>
-        <View style={styles.page}>
+        <Animated.View
+          style={{
+            height: "100%",
+            backgroundColor: animatedColor.interpolate({
+              inputRange: [0, 1],
+              outputRange: ["white", "rgba(0,0,0,0.8)"],
+            }),
+          }}
+        >
           <OpenButton openNav={() => setNavOpen(true)} />
           <Routes>
             <Route
@@ -66,7 +85,7 @@ export default function App() {
               element={<RegisterPage closeNav={() => setNavOpen(false)} />}
             />
           </Routes>
-        </View>
+        </Animated.View>
       </TouchableWithoutFeedback>
       <Navbar
         navOpen={navOpen}
@@ -78,4 +97,8 @@ export default function App() {
     </Router>
   );
 }
-const styles = StyleSheet.create({ page: { height: "100%" } });
+const styles = StyleSheet.create({
+  page: {
+    height: "100%",
+  },
+});
