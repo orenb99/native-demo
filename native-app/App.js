@@ -11,12 +11,13 @@ import Navbar from "./components/Navbar";
 import Home from "./components/Home";
 import LoginPage from "./components/LoginPage";
 import RegisterPage from "./components/RegisterPage";
-import { intercept, getHttp, loaderMonitor } from "./utils/networkWrapper";
+import { intercept, sendRequest, loaderMonitor } from "./utils/networkWrapper";
 import OpenButton from "./components/OpenButton";
+import Dashboard from "./components/Dashboard";
 export default function App() {
   const animatedColor = useRef(new Animated.Value(0)).current;
 
-  const http = "http://10.100.102.10:3001";
+  const http = "http://10.100.102.10:3001/api";
   const [navOpen, setNavOpen] = useState(false);
   const [user, setUser] = useState();
   const [refresh, setRefresh] = useState(false);
@@ -39,8 +40,7 @@ export default function App() {
 
   useEffect(() => {
     if (user) return;
-    intercept();
-    getHttp(http + "/api/user/info", "accessToken")
+    sendRequest("/user/info", "get")
       .then(({ data }) => {
         const temp = { email: data.email, name: data.name, role: data.role };
         setUser(temp);
@@ -67,22 +67,15 @@ export default function App() {
               exact
               path="/"
               element={
-                <Home
-                  user={user}
-                  refreshPage={() => setRefresh(!refresh)}
-                  closeNav={() => setNavOpen(false)}
-                />
+                <Home user={user} refreshPage={() => setRefresh(!refresh)} />
               }
             />
+            <Route exact path="/login" element={<LoginPage />} />
+            <Route exact path="/register" element={<RegisterPage />} />
             <Route
               exact
-              path="/login"
-              element={<LoginPage closeNav={() => setNavOpen(false)} />}
-            />
-            <Route
-              exact
-              path="/register"
-              element={<RegisterPage closeNav={() => setNavOpen(false)} />}
+              path="/dashboard"
+              element={<Dashboard user={user} />}
             />
           </Routes>
         </Animated.View>

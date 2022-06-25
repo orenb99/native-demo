@@ -7,7 +7,9 @@ const Home = ({ user, refreshPage }) => {
   }, []);
   return (
     <View>
-      <Text>Hello {user ? user.name : "user"}</Text>
+      <Text>
+        Hello {user ? (user.role === "admin" ? "admin " : user.name) : "user"}
+      </Text>
     </View>
   );
 };

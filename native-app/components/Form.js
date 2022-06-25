@@ -49,11 +49,14 @@ const Form = ({ type }) => {
       return false;
     }
     if (!email.match(emailReg)) {
-      setErrorMessage("Invalid email");
+      if (type === "register") setErrorMessage("Invalid email");
+      if (type === "login") setErrorMessage("User not found");
+
       return false;
     }
     if (!password.match(passwordReg)) {
-      setErrorMessage("Invalid password");
+      if (type === "register") setErrorMessage("Invalid password");
+      if (type === "login") setErrorMessage("User not found");
       return false;
     }
     if (type === "register") {

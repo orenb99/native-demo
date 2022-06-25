@@ -38,6 +38,7 @@ user.post("/login", checkInput, async (req, res) => {
 
 user.post("/token", (req, res) => {
   const refreshToken = req.body.token;
+  console.log(refreshToken);
   if (refreshToken == null) return res.sendStatus(401);
   models.Token.findOne({ where: { token: refreshToken } })
     .then((token) => {

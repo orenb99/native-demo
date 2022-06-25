@@ -33,7 +33,7 @@ const NavBar = ({ navOpen, closeNav, user, http, setUser }) => {
     e.preventDefault();
     const token = await AsyncStorage.getItem("refreshToken");
     axios
-      .delete(http + "/api/user/logout", { token })
+      .delete(http + "/user/logout", { token })
       .then(async () => {
         await AsyncStorage.clear();
         closeNav();
@@ -85,7 +85,9 @@ const NavBar = ({ navOpen, closeNav, user, http, setUser }) => {
           </TouchableHighlight>
         </View>
         <FlatList
-          data={user ? userLinks : guestLinks}
+          data={
+            user ? (user.role === "admin" ? adminLinks : userLinks) : guestLinks
+          }
           renderItem={({ item }) => (
             <Link
               to={item.path}
