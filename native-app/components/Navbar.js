@@ -23,6 +23,11 @@ const NavBar = ({ navOpen, closeNav, user, http, setUser }) => {
     { title: "Home", path: "/" },
     { title: "Logout", path: "/logout" },
   ];
+  const adminLinks = [
+    { title: "Dashboard", path: "/dashboard" },
+    { title: "Home", path: "/" },
+    { title: "Logout", path: "/logout" },
+  ];
 
   const Logout = async (e) => {
     e.preventDefault();
