@@ -5,20 +5,22 @@ import { sendRequest } from "../utils/networkWrapper";
 const Dashboard = () => {
   const [userList, setUserList] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
-  const [order, setOrder] = useState({ key: "name", order: "acc" });
+  const [sorting, setSorting] = useState({ key: "name", acc: true });
   useEffect(() => {
     sendRequest("/admin/users", "get")
       .then(({ data }) => setUserList(data))
       .catch((err) => setErrorMessage(err.response.data));
   }, []);
 
-  const orderBy = () => {};
   return (
     <View>
       <Text>Dashboard</Text>
       <FlatList
-        data={userList}
-        keyExtractor={(item) => item.name}
+        data={userList.sort((a, b) =>
+          sorting.acc
+            ? a[sorting.key] > b[sorting.key]
+            : a[sorting.key] < b[sorting.key]
+        )}
         ListHeaderComponent={
           <View style={styles.row}>
             <Text>name</Text>
