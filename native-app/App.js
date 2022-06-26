@@ -57,7 +57,7 @@ export default function App() {
             height: "100%",
             backgroundColor: animatedColor.interpolate({
               inputRange: [0, 1],
-              outputRange: ["white", "rgba(0,0,0,0.8)"],
+              outputRange: ["white", "rgba(0,0,0,0.6)"],
             }),
           }}
         >
