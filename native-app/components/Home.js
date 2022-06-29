@@ -21,6 +21,11 @@ const Home = ({ user, refreshPage }) => {
       </Text>
       {user && (
         <FlatList
+          ListHeaderComponent={
+            <View>
+              <Text>Chat Groups</Text>
+            </View>
+          }
           data={groups}
           renderItem={({ item }) => (
             <Link to={`/group/${item.id}`}>

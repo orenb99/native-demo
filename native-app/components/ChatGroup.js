@@ -1,4 +1,11 @@
-import { FlatList, StyleSheet, Text, View } from "react-native";
+import {
+  FlatList,
+  Button,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from "react-native";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-native";
 import { sendRequest } from "../utils/networkWrapper";
@@ -8,10 +15,15 @@ const ChatGroup = ({ user }) => {
   const [messages, setMessages] = useState();
   const [users, setUsers] = useState();
   const [groupName, setGroupName] = useState("");
+  const [textInput, setTextInput] = useState();
+
+  const sendMessage = () => {
+    setTextInput();
+  };
+
   useEffect(() => {
     sendRequest(`/chat/group/${id}/messages`, "get")
       .then(({ data }) => {
-        console.log(data);
         setGroupName(data.name);
         setMessages(data.messages);
         setUsers(data.users);
@@ -29,20 +41,26 @@ const ChatGroup = ({ user }) => {
           </View>
         )}
       />
-      <FlatList
-        data={messages}
-        renderItem={({ item }) =>
-          users && (
-            <View>
-              <Text>
-                {users.find((element) => element.id === item.sender).name +
-                  ": " +
-                  item.content}
-              </Text>
-            </View>
-          )
-        }
-      />
+      <View>
+        <FlatList
+          data={messages}
+          renderItem={({ item }) =>
+            users && (
+              <View>
+                <Text>
+                  {users.find((element) => element.id === item.sender).name +
+                    ": " +
+                    item.content}
+                </Text>
+              </View>
+            )
+          }
+        />
+        <View>
+          <TextInput value={textInput} onChangeText={setTextInput} />
+          <Button title={"send"} onPress={sendMessage} />
+        </View>
+      </View>
     </View>
   );
 };
