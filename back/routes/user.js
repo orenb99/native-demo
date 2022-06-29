@@ -24,7 +24,7 @@ user.post("/login", checkInput, async (req, res) => {
   if (!user) return res.status(404).send("User doesn't exists");
   const isPasswordCorrect = bcrypt.compareSync(password, user.password);
   if (!isPasswordCorrect) return res.status(401).send("Incorrect password");
-  const loginUser = { email, name: user.name, role: user.role };
+  const loginUser = { id: user.id, email, name: user.name, role: user.role };
   const accessToken = generateAccessToken(loginUser);
   const refreshToken = jwt.sign(loginUser, process.env.REFRESH_TOKEN_SECRET);
   models.Token.create({ token: refreshToken })
@@ -37,6 +37,7 @@ user.post("/login", checkInput, async (req, res) => {
 });
 
 user.post("/token", (req, res) => {
+  console.log("yes");
   const refreshToken = req.body.token;
   console.log(refreshToken);
   if (refreshToken == null) return res.sendStatus(401);
@@ -49,6 +50,7 @@ user.post("/token", (req, res) => {
         (err, user) => {
           if (err) return res.sendStatus(403);
           const accessToken = generateAccessToken({
+            id: user.id,
             email: user.email,
             name: user.name,
             role: user.role,

@@ -14,6 +14,7 @@ import RegisterPage from "./components/RegisterPage";
 import { intercept, sendRequest, loaderMonitor } from "./utils/networkWrapper";
 import OpenButton from "./components/OpenButton";
 import Dashboard from "./components/Dashboard";
+import ChatGroup from "./components/ChatGroup";
 export default function App() {
   const animatedColor = useRef(new Animated.Value(0)).current;
 
@@ -45,7 +46,9 @@ export default function App() {
         const temp = { email: data.email, name: data.name, role: data.role };
         setUser(temp);
       })
-      .catch(() => {});
+      .catch((err) => {
+        return;
+      });
   }, [refresh]);
 
   return (
@@ -76,6 +79,11 @@ export default function App() {
               exact
               path="/dashboard"
               element={<Dashboard user={user} />}
+            />
+            <Route
+              exact
+              path="/group/:id"
+              element={<ChatGroup user={user} />}
             />
           </Routes>
         </Animated.View>
