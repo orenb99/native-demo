@@ -23,6 +23,6 @@ io.on("connection", (socket) => {
   console.log("socket");
 });
 
-app.listen(PORT, () => {
+io.listen(PORT, () => {
   console.log(`server running on port ${PORT}`);
 });

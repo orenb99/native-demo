@@ -7,10 +7,14 @@ async function sendRequest(url, method, body) {
   intercept();
   const token = await AsyncStorage.getItem("accessToken");
   try {
-    return axios[method](http + url, {
-      headers: { authorization: "Bearer " + token },
-      body,
-    });
+    if (method === "get")
+      return axios[method](http + url, {
+        headers: { authorization: "Bearer " + token },
+      });
+    else
+      return axios[method](http + url, body, {
+        headers: { authorization: "Bearer " + token },
+      });
   } catch (err) {
     return err;
   }

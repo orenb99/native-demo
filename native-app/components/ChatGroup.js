@@ -9,6 +9,8 @@ import {
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-native";
 import { sendRequest } from "../utils/networkWrapper";
+import Message from "./Message";
+import { socket } from "../utils/socket";
 
 const ChatGroup = ({ user }) => {
   const { id } = useParams();
@@ -18,7 +20,17 @@ const ChatGroup = ({ user }) => {
   const [textInput, setTextInput] = useState();
 
   const sendMessage = () => {
-    setTextInput();
+    if (!textInput) return;
+    if (!textInput.trim()) return;
+    sendRequest("/chat/create/message", "post", {
+      sender: user.id,
+      content: textInput,
+      groupId: id,
+    })
+      .then(({ data }) => {
+        setTextInput();
+      })
+      .catch((err) => console.log(err.response.data));
   };
 
   useEffect(() => {
@@ -42,20 +54,20 @@ const ChatGroup = ({ user }) => {
         )}
       />
       <View>
-        <FlatList
-          data={messages}
-          renderItem={({ item }) =>
-            users && (
-              <View>
-                <Text>
-                  {users.find((element) => element.id === item.sender).name +
-                    ": " +
-                    item.content}
-                </Text>
-              </View>
-            )
-          }
-        />
+        {users && (
+          <FlatList
+            style={styles.messages}
+            data={messages}
+            renderItem={({ item }) => (
+              <Message
+                sender={users.find((element) => element.id === item.sender)}
+                content={item.content}
+                date={item.createdAt}
+                user={user}
+              />
+            )}
+          />
+        )}
         <View>
           <TextInput value={textInput} onChangeText={setTextInput} />
           <Button title={"send"} onPress={sendMessage} />
@@ -67,4 +79,11 @@ const ChatGroup = ({ user }) => {
 
 export default ChatGroup;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  messages: {
+    display: "flex",
+    flexDirection: "column",
+    height: "70%",
+    overflow: "scroll",
+  },
+});

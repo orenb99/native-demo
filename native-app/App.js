@@ -11,18 +11,17 @@ import Navbar from "./components/Navbar";
 import Home from "./components/Home";
 import LoginPage from "./components/LoginPage";
 import RegisterPage from "./components/RegisterPage";
-import { intercept, sendRequest, loaderMonitor } from "./utils/networkWrapper";
+import { intercept, sendRequest } from "./utils/networkWrapper";
 import OpenButton from "./components/OpenButton";
 import Dashboard from "./components/Dashboard";
 import ChatGroup from "./components/ChatGroup";
+import { socket } from "./utils/socket";
 export default function App() {
   const animatedColor = useRef(new Animated.Value(0)).current;
-
   const http = "http://10.100.102.10:3001/api";
   const [navOpen, setNavOpen] = useState(false);
   const [user, setUser] = useState();
   const [refresh, setRefresh] = useState(false);
-  const [loader, setLoader] = useState(false);
 
   useEffect(() => {
     if (navOpen)
@@ -40,10 +39,22 @@ export default function App() {
   }, [navOpen]);
 
   useEffect(() => {
+    if (!user) return;
+    socket.on("new message", (data) => {
+      console.log(data);
+    });
+  }, []);
+
+  useEffect(() => {
     if (user) return;
     sendRequest("/user/info", "get")
       .then(({ data }) => {
-        const temp = { email: data.email, name: data.name, role: data.role };
+        const temp = {
+          email: data.email,
+          name: data.name,
+          role: data.role,
+          id: data.id,
+        };
         setUser(temp);
       })
       .catch((err) => {

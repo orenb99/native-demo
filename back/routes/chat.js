@@ -29,10 +29,12 @@ chat.post("/create/group", (req, res) => {
     .catch((err) => res.send(err.message));
 });
 
-chat.post("/create/message", async (req, res) => {
-  const { sender, content, groupId } = req.body;
+chat.post("/create/message", validateToken, async (req, res) => {
+  const sender = req.user.id;
+  const { content, groupId } = req.body;
+
   if (!sender || !content || !groupId)
-    return res.status(400).send("Couldn't send message");
+    return res.status(400).send("Couldn't send message1");
   try {
     const group = await models.ChatGroup.findOne({
       where: { id: groupId },
@@ -40,9 +42,10 @@ chat.post("/create/message", async (req, res) => {
     });
     if (!group) return res.status(404).send("Group not found");
     const user = group.Users[0];
-    if (!user) return res.status(400).send("Couldn't send message");
+    if (!user) return res.status(400).send("Couldn't send message2");
     const message = await group.createChatMessage({ sender, content });
-    return res.send(message);
+    req.socket.emit("new message", message);
+    return res.send("Message sent");
   } catch (err) {
     return res.send(err);
   }
