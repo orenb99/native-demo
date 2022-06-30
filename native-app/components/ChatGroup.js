@@ -14,10 +14,10 @@ import { socket } from "../utils/socket";
 
 const ChatGroup = ({ user }) => {
   const { id } = useParams();
-  const [messages, setMessages] = useState();
+  const [messages, setMessages] = useState([]);
   const [users, setUsers] = useState();
   const [groupName, setGroupName] = useState("");
-  const [textInput, setTextInput] = useState();
+  const [textInput, setTextInput] = useState("");
 
   const sendMessage = () => {
     if (!textInput) return;
@@ -28,10 +28,19 @@ const ChatGroup = ({ user }) => {
       groupId: id,
     })
       .then(({ data }) => {
-        setTextInput();
+        setTextInput("");
       })
       .catch((err) => console.log(err.response.data));
   };
+  useEffect(() => {
+    socket.on("new message", (data) => {
+      if (data.groupId === Number(id)) {
+        const temp = [...messages];
+        temp.push(data);
+        setMessages(temp);
+      }
+    });
+  }, [user, messages]);
 
   useEffect(() => {
     sendRequest(`/chat/group/${id}/messages`, "get")
@@ -40,32 +49,37 @@ const ChatGroup = ({ user }) => {
         setMessages(data.messages);
         setUsers(data.users);
       })
-      .catch((err) => console.log(err.message));
-  }, []);
+      .catch((err) => console.log(err));
+  }, [user]);
   return (
     <View>
       <Text>{groupName}</Text>
       <FlatList
         data={users}
-        renderItem={({ item }) => (
-          <View>
-            <Text>{item.name}</Text>
-          </View>
-        )}
+        renderItem={({ item }) =>
+          item && (
+            <View>
+              <Text>{item.name}</Text>
+            </View>
+          )
+        }
       />
       <View>
         {users && (
           <FlatList
             style={styles.messages}
             data={messages}
-            renderItem={({ item }) => (
-              <Message
-                sender={users.find((element) => element.id === item.sender)}
-                content={item.content}
-                date={item.createdAt}
-                user={user}
-              />
-            )}
+            ListEmptyComponent={() => <View></View>}
+            renderItem={({ item }) =>
+              item && (
+                <Message
+                  sender={users.find((element) => element.id === item.sender)}
+                  content={item.content}
+                  date={item.date}
+                  user={user}
+                />
+              )
+            }
           />
         )}
         <View>

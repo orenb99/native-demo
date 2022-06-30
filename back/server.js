@@ -11,11 +11,6 @@ app.use(express.json());
 app.use(cors());
 app.use("/api", api);
 
-app.use((req, res, next) => {
-  req.socket = io;
-  next();
-});
-
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
   cors: {
@@ -24,9 +19,15 @@ const io = new Server(httpServer, {
 });
 
 io.on("connection", (socket) => {
-  console.log("socket");
+  console.log("connected");
+});
+app.use((req, res, next) => {
+  req.io = io;
+  next();
 });
 
-io.listen(PORT, () => {
+app.set("io", io);
+
+httpServer.listen(PORT, () => {
   console.log(`server running on port ${PORT}`);
 });

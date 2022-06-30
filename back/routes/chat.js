@@ -32,7 +32,7 @@ chat.post("/create/group", (req, res) => {
 chat.post("/create/message", validateToken, async (req, res) => {
   const sender = req.user.id;
   const { content, groupId } = req.body;
-
+  const io = req.app.get("io");
   if (!sender || !content || !groupId)
     return res.status(400).send("Couldn't send message1");
   try {
@@ -44,7 +44,12 @@ chat.post("/create/message", validateToken, async (req, res) => {
     const user = group.Users[0];
     if (!user) return res.status(400).send("Couldn't send message2");
     const message = await group.createChatMessage({ sender, content });
-    req.socket.emit("new message", message);
+    io.emit("new message", {
+      content: message.content,
+      sender: message.sender,
+      date: message.createdAt,
+      groupId: message.groupId,
+    });
     return res.send("Message sent");
   } catch (err) {
     return res.send(err);
@@ -82,10 +87,17 @@ chat.get("/group/:groupId/messages", validateToken, async (req, res) => {
     if (!users.map((user) => user.id).includes(id))
       return res.send("Can't send message");
     if (!group) return res.status(404).send("no group found");
-    const messages = await group.getChatMessages();
+    const messages = (await group.getChatMessages()).map((item) => {
+      return {
+        content: item.content,
+        sender: item.sender,
+        date: item.createdAt,
+        groupId: item.groupId,
+      };
+    });
     res.status(200).send({ users, name: group.name, messages });
   } catch (err) {
-    return res.send(err.message);
+    return res.send(err);
   }
 });
 

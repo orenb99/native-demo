@@ -6,7 +6,6 @@ const Message = ({ content, sender, date, user }) => {
   useEffect(() => {
     if (sender.id === user.id) setIsUser(true);
   }, []);
-
   return (
     <View
       style={{ ...styles.message, ...styles[isUser ? "sent" : "received"] }}

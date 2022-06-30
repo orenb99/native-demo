@@ -39,13 +39,6 @@ export default function App() {
   }, [navOpen]);
 
   useEffect(() => {
-    if (!user) return;
-    socket.on("new message", (data) => {
-      console.log(data);
-    });
-  }, []);
-
-  useEffect(() => {
     if (user) return;
     sendRequest("/user/info", "get")
       .then(({ data }) => {
