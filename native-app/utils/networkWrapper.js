@@ -9,7 +9,10 @@ async function sendRequest(url, method, body) {
   try {
     if (method === "get")
       return axios[method](http + url, {
-        headers: { authorization: "Bearer " + token },
+        headers: {
+          authorization: "Bearer " + token,
+          "Access-Control-Allow-Origin": "*",
+        },
       });
     else
       return axios[method](http + url, body, {
